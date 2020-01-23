@@ -240,9 +240,6 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
 
     @Override
     public String toParamName(String name) {
-        // sanitize name
-        name = sanitizeName(name, "[^\\w$]");
-
         if ("_".equals(name)) {
             name = "_u";
         }
@@ -512,11 +509,11 @@ public abstract class AbstractTypeScriptClientCodegen extends DefaultCodegen imp
             case original:
                 return name;
             case camelCase:
-                return camelize(name, true);
+                return camelize(sanitizeName(name, "[^\\w$]"), true);
             case PascalCase:
-                return camelize(name);
+                return camelize(sanitizeName(name, "[^\\w$]"));
             case snake_case:
-                return underscore(name);
+                return underscore(sanitizeName(name, "[^\\w$]"));
             default:
                 throw new IllegalArgumentException("Invalid model property naming '" +
                         name + "'. Must be 'original', 'camelCase', " +
